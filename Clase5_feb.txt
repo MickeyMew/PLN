@@ -1,0 +1,39 @@
+Lectura de texto como cadena->
+Limpiar de HTML->
+Tokenizar:word_tokenize(),PlaintextCorpusReader,Split()->
+Selección de los tokens relevantes para mi objetivo->
+Vectorización de texto(conjunto de tokens o caracteristicas)
+-ángulo entre vectores con coseno
+
+Clase 7/02
+
+Normalización de texto
+	- Todo a minusculas
+	- Eliminar stopwords
+	- Eliminar los html tags
+	- Eliminar todo caracter que no es letra
+
+	Sustitución de formas morfologicas de una palabra por su lema
+	(eats, ate ) => eat(lema)
+	- Stemming
+	- Lematización
+	Libro:Text Analytics With Python
+	    ->Text Normalization
+	      (Pag 131 - 148)
+
+4 palabras izq der de contexto
+tenemos nuesto vocabulario
+texto = lista de palabras normalizadas(pueden ser repetidas, sin ordenar)
+gato_contexto = [ ... ] (4 izquierda 4 derecha)
+^se puede hacer como diccionario
+y queremos pasarlo a un vector
+
+freeling tags
+lookup tagger; nosotros mismos tenemos que encontrar las etiquetas más frecuentes y podemos variar la cantidad de palabras etiquetadas
+unigramTagger: toma en cuenta todas las palabras
+regexopTagger: encuentra patrones y etiqueta dependiendo de los patrones, si no encuentra usa un tagger por defecto
+
+combinación de los 3
+combined_tagger = nltk.unigramTagger()
+
+Utilizando el programa vamos a hacer nuestro spanish tagger

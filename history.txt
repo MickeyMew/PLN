@@ -1,0 +1,46 @@
+from nltk.corpus import PlaintextCorpusReader
+corpus_root = /root/Descargas/corpus
+corpus_root = '/root/Descargas/corpus'
+wordlists = PlaintextCorpusReader(corpus_root,'.*')
+wordlists.fields()
+wordlists.fileids()
+words = wordlists.words('e961024.htm')
+words = list(words)
+words
+from urllib import urlopen
+import nltk
+from urllib import urlopen
+f = open('/root/Descargas/corpus/e961024.htm')
+text = f.read()
+print(type(text))
+print(len(text))
+print(text[:1000])
+f = open('/root/Descargas/corpus/e961024.htm', encoding = 'utf-8')
+text = f.read()
+print(type(text))
+print(len(text))
+print(text[:1000])
+tokens = nltk.word_tokenize(text)
+type(tokens)
+len(tokens)
+tokens[:10
+]
+tokens[:50]
+tokens[:100]
+f.close()
+text = nltk.Text(tokens)
+print(text[:100])
+type(text)
+text.concordance('actividad')
+text.similarity('actividad')
+text.similar('actividad')
+readline.get_current_history_length()
+import readline
+readline.get_history_item()
+readline.get_history_item(1)
+readline.get_history_item(2)
+readline.get_history_item(3)
+readline.get_history_item(0)
+for i in range(readline.get_current_history_length()):
+	print(readline.get_history_item(i + 1))
+
