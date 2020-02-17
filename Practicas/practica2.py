@@ -7,11 +7,11 @@ def get_text_string(fname):
     f = open(fname, encoding = "utf-8")
     text_string = f.read()
     f.close()
-    
+
     soup = BeautifulSoup(text_string, 'lxml')
     text_string = soup.get_text()
     text_string = text_string.lower()
-    
+
     return text_string
 
 def get_raw_tokens(text_string):
@@ -59,14 +59,14 @@ def get_vectors(contexts, vocabulary):
              vector.append(contexts[term].count(vocabulary[x]))
         vectors[term] = vector
     return vectors
-                
-def print_context_inord(context):    
+
+def print_context_inord(context):
     print(sorted(context.items(), key = lambda kv:(kv[1], kv[0])))
 
 def get_vocabulary(norm_tokens):
     vocabulary = list(set(norm_tokens))
     vocabulary.sort()
-    return vocabulary 
+    return vocabulary
 
 text_str = get_text_string("e961024.htm")
 r_tokens = get_raw_tokens(text_str)
@@ -74,6 +74,6 @@ clean_tokens = get_clean_tokens(r_tokens)
 norm_tokens = get_norm_tokens(clean_tokens)
 vocabulary = get_vocabulary(norm_tokens)
 print(vocabulary)
-contexts = get_contexts(norm_tokens, vocabulary)
-vectors = get_vectors(contexts, vocabulary)
-print(vectors['morir'])
+#contexts = get_contexts(norm_tokens, vocabulary)
+#vectors = get_vectors(contexts, vocabulary)
+#print(vectors['morir'])
