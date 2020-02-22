@@ -36,4 +36,25 @@ regexopTagger: encuentra patrones y etiqueta dependiendo de los patrones, si no 
 combinación de los 3
 combined_tagger = nltk.unigramTagger()
 
+
 Utilizando el programa vamos a hacer nuestro spanish tagger
+
+Texto->
+Normalización->
+Selección de caracteristicas-> 
+	Linguisticas
+		Unigramas origiales
+		Lemas con POS
+		Stems
+	Numericas
+		1.frecuencia original
+		2.frecuencia normalizada(probabilidad)
+		3.term frequency(tf)
+			tf(frecuencia original) = valor
+			log(1 + x)
+			y = (k + 1) x  / (x + k) 
+		4.iverse document frequency(idf)
+LancasterStemmer
+RegexpStemmer
+1. Stemming de Snowball + frec.orig
+2. Stemming de Snowball + probabilidad
