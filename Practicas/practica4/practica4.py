@@ -5,6 +5,7 @@ import nltk
 from re import match
 from nltk.stem import SnowballStemmer
 import numpy as np
+import math
 
 def get_text_string(fname):
     f = open(fname, encoding = "utf-8")
@@ -111,16 +112,72 @@ def get_frec_vector(contexts, vocabulary):
 
 def get_v_tf(vocabulary, vector, k):
     v_tf = list()
-    for i in range(0,len(vocabulary)):
+    for i in range(0, len(vocabulary)):
         v_tf.append( ( (k + 1) * vector[i] ) / (vector[i] + k) )
     return v_tf
 
-def get_ctx_vectors(vocabulary, vectors, k):
-    ctx_vectors = dict()
+def get_avdl(vectors, vocabulary):
+    avdl = 0    
     for w in vocabulary:
-        ctx_vectors[w] = get_v_tf(vocabulary, vectors[w], k)
+        avdl += np.sum(np.array(vectors[w]))
+    avdl = avdl / len(vocabulary)
+    return avdl
+
+def get_bm25(vocabulary, vector, avdl):
+    bm25 = list()
+    b = 0.75
+    nsum = np.sum(vector)
+    for i in range(0, len(vocabulary)):
+        bm25.append( ( (k + 1) * vector[i] ) / (vector[i] + k * ( 1 - b + (b * ( nsum / avdl))) ) )
+    return bm25
+
+def get_IDF(frec_vector, vocabulary):
+    idf = list()
+    for i in range(0, len(vocabulary)):
+        idf.append(math.log((9057 + 1) / frec_vector[i]))
+    return idf;
+        
+def get_ctx_vectors(vocabulary, vectors, k, frec_vector):
+    ctx_vectors = dict()
+    idf = get_IDF(frec_vector, vocabulary)
+    for w in vocabulary:
+        v_tf = get_v_tf(vocabulary, vectors[w], k)
+        ctx_vectors[w] = np.multiply(np.array(v_tf),np.array(idf)).tolist()
     return ctx_vectors
 
+def get_bm25_idf(vocabulary, vectors, k, frec_vector):
+    bm25_idf = dict()
+    idf = get_IDF(frec_vector, vocabulary)
+    avdl = get_avdl(vectors, vocabulary)
+    for w in vocabulary:
+        bm25 = get_bm25(vocabulary, vectors[w], avdl)
+        bm25_idf[w] = np.multiply(np.array(bm25),np.array(idf)).tolist()
+    return bm25_idf
+
+def get_cosines(word, vocabulary, fname_vectors):
+    cosines = dict()
+    vectors = get_file_object(fname_vectors)
+    vec = vectors[word]
+    vec = np.array(vec)
+    for v in vocabulary:
+        vector = vectors[v]
+        vector = np.array(vector)
+        cosine = np.dot(vec, vector) / ((np.sqrt(np.sum(vec **2))) * (np.sqrt(np.sum(vector ** 2))))
+        cosines[v] = cosine
+    import operator
+    cosines = sorted(cosines.items(),
+                     key = operator.itemgetter(1),
+                     reverse = True)
+    return cosines
+
+def print_cosines(fname, cosines):
+    f = open(fname, 'w')
+    for item in cosines:
+        for w in item:
+            f.write(str(w))
+            f.write(" ")
+        f.write("\n")
+    f.close()
 
 #fname = "e961024.htm";
 #text_str = get_text_string(fname)
@@ -147,15 +204,27 @@ fname_vectors = "vectors.txt"
 #save_file_object(fname_vectors, vectors)
 vectors = get_file_object(fname_vectors)
 
-print(vectors['mexic'])
+'''
+fname_cosines = "def_cosines.txt"
+def_cosines = get_cosines('mexic', vocabulary, fname_vectors)
+print_cosines(fname_cosines, def_cosines)
+'''
+
+#print(vectors['mexic'])
 print("\nnwn\n")
 
-fname_prom_vectors = "prom_vectors.txt"
+#fname_prom_vectors = "prom_vectors.txt"
 #prom_vectors = get_prom_vectors(vectors, vocabulary)
 #save_file_object(fname_prom_vectors, prom_vectors)
-prom_vectors = get_file_object(fname_prom_vectors)
+#prom_vectors = get_file_object(fname_prom_vectors)
 
-print(prom_vectors['mexic'])
+'''
+fname_cosines = "prom_cosines.txt"
+prom_cosines = get_cosines('mexic', vocabulary, fname_prom_vectors)
+print_cosines(fname_cosines, prom_cosines)
+'''
+
+#print(prom_vectors['mexic'])
 print("\nnwn\n")
 
 fname_frec_vector = "frec_vector.txt"
@@ -165,8 +234,22 @@ frec_vector = get_file_object(fname_frec_vector)
 
 fname_ctx_vectors = "ctx_vectors.txt"
 k = 0.8
-#ctx_vectors = get_ctx_vectors(vocabulary, vectors, k)
+#ctx_vectors = get_ctx_vectors(vocabulary, vectors, k, frec_vector)
 #save_file_object(fname_ctx_vectors, ctx_vectors)
-ctx_vectors = get_file_object(fname_ctx_vectors)
+#ctx_vectors = get_file_object(fname_ctx_vectors)
 
-print(ctx_vectors['mexic'])
+'''
+fname_cosines = "ctx_cosines.txt"
+ctx_cosines = get_cosines('mexic', vocabulary, fname_ctx_vectors)
+print_cosines(fname_cosines, ctx_cosines)
+'''
+
+fname_BM25 = "bm25idf.txt"
+#bm25idf = get_bm25_idf(vocabulary, vectors, k, frec_vector)
+#save_file_object(fname_BM25, bm25idf)
+#bm25idf = get_file_object(fname_BM25)
+
+fname_cosines = "bm_cosines.txt"
+ctx_cosines = get_cosines('mexic', vocabulary, fname_BM25)
+print_cosines(fname_cosines, ctx_cosines)
+#print(ctx_vectors['mexic'])

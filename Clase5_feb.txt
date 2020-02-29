@@ -55,6 +55,36 @@ Selección de caracteristicas->
 			y = (k + 1) x  / (x + k) 
 		4.iverse document frequency(idf)
 LancasterStemmer
+
 RegexpStemmer
 1. Stemming de Snowball + frec.orig
 2. Stemming de Snowball + probabilidad
+
+Problemas de Frecuencia
+1-Longitud distinta de documentos
+2-Palabras demasiado frecuentes en un doc
+3-Palabras comunes
+4-
+
+Feature Extraction
+gensim
+word embeddings (se puede usar pero no se puede interpretar)
+    se divide en varios modelos
+    -word2vec(gensim.models.Word2Vec(params...)
+
+Tarea1 para el martes:
+    encontrar IDF-weighted dl = x1 * IDF*?(w1) ordenado
+    con lemmatizer 
+
+Randomness of X is measured by Entropy H(X)
+Conditional Entropy
+Conditional Entropy to capture syntagmatic relation
+
+Tarea2 Conditional Entropy menos entropia mas relación sintamatica
+se calculan por medio de las frecuencias de W1, W2 y W1 + W2
+probabilidad conjunta es p(x) u p(y)
+"parser" para analisis sintactico
+Para la estimación de probabilidades tomaremos una oración como segmento, normalizamos cada oración(lemmatizar, eliminar stopwords, caracteres esp, minusculas) 
+Filtrar a partir de un valor de H( ) umbral = threshold
+Limitante de la entropia condicional
+
